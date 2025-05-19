@@ -1,0 +1,125 @@
+{
+  "name": "playwright-file-test-runner",
+  "publisher": "AndyGleedSosnowski",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AndyGleedSosnowski/playwright-file-test-runner-vscode-extension"
+  },
+  "license": "MIT",
+  "displayName": "Playwright File Test Runner",
+  "description": "Run Playwright tests and Codegen from context menus or the main Terminal menu.",
+  "icon": "images/extension.png",
+  "keywords": [
+    "playwright",
+    "test",
+    "runner",
+    "codegen",
+    "e2e"
+  ],
+  "version": "1.0.7",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Testing"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "playwright-file-test-runner.runTestOnce",
+        "title": "Run Playwright Test",
+        "category": "Playwright"
+      },
+      {
+        "command": "playwright-file-test-runner.runTestAndPromptForRepeats",
+        "title": "Run Playwright Test with Repeats...",
+        "category": "Playwright"
+      },
+      {
+        "command": "playwright-file-test-runner.runCodegen",
+        "title": "Run Playwright Codegen",
+        "category": "Playwright"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "command": "playwright-file-test-runner.runTestOnce",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "command": "playwright-file-test-runner.runTestAndPromptForRepeats",
+          "group": "navigation@2"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "command": "playwright-file-test-runner.runTestOnce",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "command": "playwright-file-test-runner.runTestAndPromptForRepeats",
+          "group": "navigation@2"
+        }
+      ],
+      "MenubarTerminalMenu": [
+        {
+          "command": "playwright-file-test-runner.runCodegen"
+        }
+      ]
+    },
+    "configuration": [
+      {
+        "title": "Playwright File Test Runner",
+        "properties": {
+          "playwright-file-test-runner.configFile": {
+            "type": "string",
+            "default": "playwright.config.ts",
+            "description": "The Playwright config file to use (e.g., playwright.config.ts). Suggestions provided when editing settings.json."
+          },
+          "playwright-file-test-runner.project": {
+            "type": "string",
+            "default": "",
+            "description": "The Playwright project to run (e.g., chromium, firefox, webkit). Leave empty to run all projects specified in the config for that test file."
+          },
+          "playwright-file-test-runner.repeatEach": {
+            "type": "integer",
+            "default": 3,
+            "minimum": 1,
+            "description": "Default number of times to repeat each test when prompted by Ctrl+Shift+P 'Run Playwright Test with Repeats...' command. This value pre-fills the prompt and is updated by user input."
+          },
+          "playwright-file-test-runner.codegenURL": {
+            "type": "string",
+            "default": "https://example.com",
+            "description": "URL for Playwright Codegen (e.g., https://example.com). If empty, Codegen starts without a URL."
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext .ts",
+    "test": "vscode-test",
+    "build": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.3.9"
+  }
+}
