@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "displayName": "Playwright File Test Runner",
-  "description": "Run Playwright tests and Codegen from context menus or the main Terminal menu.",
+  "description": "Run Playwright tests and Codegen from context menus or commands.",
   "icon": "images/extension.png",
   "keywords": [
     "playwright",
@@ -16,7 +16,7 @@
     "codegen",
     "e2e"
   ],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "engines": {
     "vscode": "^1.85.0"
   },
