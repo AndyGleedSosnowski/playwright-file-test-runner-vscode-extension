@@ -6,7 +6,7 @@
     "url": "https://github.com/AndyGleedSosnowski/playwright-file-test-runner-vscode-extension"
   },
   "license": "MIT",
-  "displayName": "Playwright File Test Runner",
+  "displayName": "Playwright File Test Runner by AGS",
   "description": "Run Playwright tests and Codegen from context menus or commands.",
   "icon": "images/extension.png",
   "keywords": [
@@ -16,7 +16,7 @@
     "codegen",
     "e2e"
   ],
-  "version": "1.0.8",
+  "version": "1.0.9",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -70,6 +70,16 @@
       "MenubarTerminalMenu": [
         {
           "command": "playwright-file-test-runner.runCodegen"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "playwright-file-test-runner.runTestOnce",
+          "when": "false"
+        },
+        {
+          "command": "playwright-file-test-runner.runTestAndPromptForRepeats",
+          "when": "false"
         }
       ]
     },
