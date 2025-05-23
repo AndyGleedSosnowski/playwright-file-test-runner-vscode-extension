@@ -16,7 +16,7 @@
     "codegen",
     "e2e"
   ],
-  "version": "1.0.9",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -100,8 +100,8 @@
           "playwright-file-test-runner.repeatEach": {
             "type": "integer",
             "default": 3,
-            "minimum": 1,
-            "description": "Default number of times to repeat each test when prompted by Ctrl+Shift+P 'Run Playwright Test with Repeats...' command. This value pre-fills the prompt and is updated by user input."
+            "minimum": 2,
+            "description": "Default number of times to repeat each test when prompted by 'Run Playwright Test with Repeats...' command. This value pre-fills the prompt and is updated by user input."
           },
           "playwright-file-test-runner.codegenURL": {
             "type": "string",
