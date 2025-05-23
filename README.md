@@ -1,6 +1,6 @@
 # Playwright File Test Runner
 
-A simple [Visual Studio Code](https://code.visualstudio.com/) extension that allows you to run a test by right-clicking a file in the explorer view or by right-clicking an opened files tab, and then click 'Run Playwright Test' or 'Run Playwright Test with Repeats...'
+A simple [Visual Studio Code](https://code.visualstudio.com/) extension that allows you to run a test by right-clicking one or more files in the file explorer view or by right-clicking an opened files tab, and then click 'Run Playwright Test' or 'Run Playwright Test with Repeats...'
 
 ![File context menu](https://andygleedsosnowski.com/dev/extensions/pwfiletestrunner/ext-file-context-menu.png "Test file context menu")
 
@@ -11,13 +11,13 @@ A simple [Visual Studio Code](https://code.visualstudio.com/) extension that all
 
 ## Install
 
-Launch VS Code, then (Ctrl+P) and either copy/paste or type the following command, and press enter:
-
-`ext install playwright-file-test-runner`
-
-Or in VS Code Marketplace, search for `playwright file test runner`.
+Search the VS Code Marketplace for `Playwright File Test Runner by AGS`.
 
 ![VS Code Marketplace](https://andygleedsosnowski.com/dev/extensions/pwfiletestrunner/ext-marketplace.png "VS Code Marketplace")
+
+Or Ctrl+P and either copy/paste or type the following command, and press enter:
+
+`ext install playwright-file-test-runner`
 
 ## Settings
 
@@ -35,6 +35,10 @@ This extension has the following settings:
   ![Codegen command](https://andygleedsosnowski.com/dev/extensions/pwfiletestrunner/ext-codegen-command.png "Codegen command")
 
 ## Release Notes
+
+### 1.1.0
+
+Added ability to run multiple selected tests from context menu.
 
 ### 1.0.9
 
