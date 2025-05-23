@@ -25,7 +25,7 @@ This extension has the following settings:
 
 ![VS Code Settings](https://andygleedsosnowski.com/dev/extensions/pwfiletestrunner/ext-settings.png "VS Code Settings")
 
-- `playwright-file-test-runner.configFile`: The Playwright config file to use (e.g., playwright.config.ts). Suggestions provided when editing settings.json.
+- `playwright-file-test-runner.configFile`: The Playwright config file to use (e.g., playwright.config.ts). Suggestions are provided when editing settings.json.
 
 - `playwright-file-test-runner.project`: The Playwright project to run (e.g., chromium, firefox, webkit). Leave empty to run all projects specified in the config for that test file.
 
@@ -36,10 +36,10 @@ This extension has the following settings:
 
 ## Release Notes
 
-### 1.1.0
+### 1.1.1
 
 Added ability to run multiple selected tests from context menu.
 
-### 1.0.9
+### 1.1.0
 
 Initial release of Playwright File Test Runner
