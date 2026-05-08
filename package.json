@@ -16,7 +16,7 @@
     "codegen",
     "e2e"
   ],
-  "version": "1.1.1",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -45,24 +45,24 @@
     "menus": {
       "explorer/context": [
         {
-          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "when": "(resourceLangId == typescript || resourceLangId == javascript) && resourcePath =~ /\\.(spec|test)\\.(ts|js)$/",
           "command": "playwright-file-test-runner.runTestOnce",
           "group": "navigation@1"
         },
         {
-          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "when": "(resourceLangId == typescript || resourceLangId == javascript) && resourcePath =~ /\\.(spec|test)\\.(ts|js)$/",
           "command": "playwright-file-test-runner.runTestAndPromptForRepeats",
           "group": "navigation@2"
         }
       ],
       "editor/title/context": [
         {
-          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "when": "(resourceLangId == typescript || resourceLangId == javascript) && resourcePath =~ /\\.(spec|test)\\.(ts|js)$/",
           "command": "playwright-file-test-runner.runTestOnce",
           "group": "navigation@1"
         },
         {
-          "when": "resourceLangId == typescript && resourcePath =~ /\\.(spec|test)\\.ts$/",
+          "when": "(resourceLangId == typescript || resourceLangId == javascript) && resourcePath =~ /\\.(spec|test)\\.(ts|js)$/",
           "command": "playwright-file-test-runner.runTestAndPromptForRepeats",
           "group": "navigation@2"
         }
@@ -87,6 +87,19 @@
       {
         "title": "Playwright File Test Runner",
         "properties": {
+          "playwright-file-test-runner.packageManager": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "npm",
+              "pnpm",
+              "yarn",
+              "bun"
+            ],
+            "default": "auto",
+            "scope": "resource",
+            "description": "Package manager to use when running Playwright tests and Codegen. Defaults to auto-detection via lock file and packageManager field in package.json."
+          },
           "playwright-file-test-runner.configFile": {
             "type": "string",
             "default": "playwright.config.ts",
