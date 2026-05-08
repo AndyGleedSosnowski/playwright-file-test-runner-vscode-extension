@@ -25,6 +25,8 @@ This extension has the following settings:
 
 ![VS Code Settings](https://andygleedsosnowski.com/dev/extensions/pwfiletestrunner/ext-settings.png "VS Code Settings")
 
+- `playwright-file-test-runner.packageManager`: Package manager to use when running tests and Codegen. Set to `auto` (default) to detect automatically from your project's lock file or `packageManager` field in `package.json`. Supported values: `auto`, `npm`, `pnpm`, `yarn`, `bun`.
+
 - `playwright-file-test-runner.configFile`: The Playwright config file to use (e.g., playwright.config.ts). Suggestions are provided when editing settings.json.
 
 - `playwright-file-test-runner.project`: The Playwright project to run (e.g., chromium, firefox, webkit). Leave empty to run all projects specified in the config for that test file.
@@ -35,6 +37,12 @@ This extension has the following settings:
   ![Codegen command](https://andygleedsosnowski.com/dev/extensions/pwfiletestrunner/ext-codegen-command.png "Codegen command")
 
 ## Release Notes
+
+### 1.2.0
+
+Added automatic package manager detection. The extension now detects whether your project uses npm, pnpm, yarn, or bun by inspecting the `packageManager` field in `package.json` and lock files, and builds the Playwright command accordingly. A new `playwright-file-test-runner.packageManager` setting allows you to override detection explicitly. Falls back silently to npm if no package manager can be determined.
+
+Extended file type support to include `.spec.js` and `.test.js` in addition to `.spec.ts` and `.test.ts`.
 
 ### 1.1.1
 

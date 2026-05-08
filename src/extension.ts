@@ -1,4 +1,71 @@
 import * as vscode from "vscode";
+import * as fs from "fs";
+import * as path from "path";
+
+type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
+
+function detectPackageManager(nearUri?: vscode.Uri): PackageManager {
+  const configuration = vscode.workspace.getConfiguration(
+    "playwright-file-test-runner"
+  );
+  const setting = configuration.get<string>("packageManager") || "auto";
+
+  if (setting !== "auto") {
+    return setting as PackageManager;
+  }
+
+  let searchDir: string | undefined;
+  if (nearUri) {
+    searchDir = path.dirname(nearUri.fsPath);
+  } else {
+    searchDir = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+  }
+
+  if (!searchDir) {
+    return "npm";
+  }
+
+  let dir = searchDir;
+  while (true) {
+    const pkgJsonPath = path.join(dir, "package.json");
+    if (fs.existsSync(pkgJsonPath)) {
+      try {
+        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, "utf8"));
+        if (typeof pkgJson.packageManager === "string") {
+          const pm = pkgJson.packageManager.toLowerCase();
+          if (pm.startsWith("pnpm")) { return "pnpm"; }
+          if (pm.startsWith("yarn")) { return "yarn"; }
+          if (pm.startsWith("bun")) { return "bun"; }
+          return "npm";
+        }
+      } catch {
+        // malformed package.json, fall through to lock file check
+      }
+
+      if (fs.existsSync(path.join(dir, "pnpm-lock.yaml"))) { return "pnpm"; }
+      if (fs.existsSync(path.join(dir, "yarn.lock"))) { return "yarn"; }
+      if (fs.existsSync(path.join(dir, "bun.lockb"))) { return "bun"; }
+      if (fs.existsSync(path.join(dir, "package-lock.json"))) { return "npm"; }
+
+      break;
+    }
+
+    const parent = path.dirname(dir);
+    if (parent === dir) { break; }
+    dir = parent;
+  }
+
+  return "npm";
+}
+
+function getPlaywrightPrefix(pm: PackageManager): string {
+  switch (pm) {
+    case "pnpm": return "pnpm exec playwright";
+    case "yarn": return "yarn playwright";
+    case "bun": return "bunx playwright";
+    default: return "npx playwright";
+  }
+}
 
 // Helper function to get the primary workspace folder
 function getWorkspaceFolder(): vscode.WorkspaceFolder | undefined {
@@ -52,11 +119,14 @@ async function buildAndRunPlaywrightTestCommand(
     }
     const testFileUris = target.filter(
       (uri) =>
-        uri.fsPath.endsWith(".spec.ts") || uri.fsPath.endsWith(".test.ts")
+        uri.fsPath.endsWith(".spec.ts") ||
+        uri.fsPath.endsWith(".test.ts") ||
+        uri.fsPath.endsWith(".spec.js") ||
+        uri.fsPath.endsWith(".test.js")
     );
     if (testFileUris.length === 0) {
       vscode.window.showErrorMessage(
-        "No .spec.ts or .test.ts files found in selection."
+        "No .spec.ts, .test.ts, .spec.js, or .test.js files found in selection."
       );
       return;
     }
@@ -71,6 +141,10 @@ async function buildAndRunPlaywrightTestCommand(
     targetPathsString = `"${vscode.workspace.asRelativePath(target, false)}"`;
   }
 
+  const firstUri = Array.isArray(target) ? target[0] : target;
+  const pm = detectPackageManager(firstUri);
+  const prefix = getPlaywrightPrefix(pm);
+
   const configuration = vscode.workspace.getConfiguration(
     "playwright-file-test-runner"
   );
@@ -79,7 +153,7 @@ async function buildAndRunPlaywrightTestCommand(
   const projectFromSettings = configuration.get<string>("project");
   // const runHeaded = configuration.get<boolean>("headed"); // Removed headed setting
 
-  let commandToRun = `npx playwright test ${targetPathsString}`;
+  let commandToRun = `${prefix} test ${targetPathsString}`;
 
   if (configFile) {
     commandToRun += ` --config "${configFile}"`;
@@ -206,7 +280,9 @@ export function activate(context: vscode.ExtensionContext) {
       const codegenURLValue =
         configuration.get<string>("codegenURL")?.trim() || "";
 
-      let codegenCommand = "npx playwright codegen";
+      const codegenPm = detectPackageManager();
+      const codegenPrefix = getPlaywrightPrefix(codegenPm);
+      let codegenCommand = `${codegenPrefix} codegen`;
       // Directly use the codegenURLValue; no environment variable resolution
       if (codegenURLValue && codegenURLValue.trim() !== "") {
         const escapedTarget = codegenURLValue.replace(/"/g, '\\"');
